@@ -29,6 +29,20 @@
                 return "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36";
             }
         });
+        
+        // Override platform to prevent VR detection
+        Object.defineProperty(navigator, 'platform', {
+            get: function () {
+                return "Win32";
+            }
+        });
+        
+        // Prevent WebRTC leaks that may expose Quest 3
+        Object.defineProperty(navigator, 'mediaDevices', {
+            get: function () {
+                return undefined;
+            }
+        });
 
         // Get full Zoom link from URL parameters and force desktop mode
         function getZoomLink() {
@@ -47,7 +61,7 @@
     </script>
 </head>
 <body>
-    <iframe id="zoomFrame" allow="microphone; camera"></iframe>
+    <iframe id="zoomFrame" sandbox="allow-scripts allow-same-origin allow-popups allow-forms" allow="microphone; camera"></iframe>
     <script>
         const zoomFrame = document.getElementById('zoomFrame');
         zoomFrame.src = getZoomLink();
