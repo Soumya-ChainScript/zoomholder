@@ -44,12 +44,13 @@
             }
         });
 
-        // Get full Zoom link from URL parameters and force desktop mode
+        // Get full Zoom link from URL parameters and force direct meeting join
         function getZoomLink() {
             const urlParams = new URLSearchParams(window.location.search);
             let zoomUrl = urlParams.get('zoom');
             if (zoomUrl) {
                 zoomUrl = decodeURIComponent(zoomUrl);
+                zoomUrl = zoomUrl.replace("/wc/join/", "/j/"); // Force direct join
                 if (!zoomUrl.includes('?')) {
                     zoomUrl += '?browser=chrome';
                 } else {
