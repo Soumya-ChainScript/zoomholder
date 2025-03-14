@@ -30,18 +30,27 @@
             }
         });
 
-        // Get full Zoom link from URL parameters
+        // Get full Zoom link from URL parameters and force desktop mode
         function getZoomLink() {
             const urlParams = new URLSearchParams(window.location.search);
-            const zoomUrl = urlParams.get('zoom');
-            return zoomUrl ? decodeURIComponent(zoomUrl) : 'about:blank';
+            let zoomUrl = urlParams.get('zoom');
+            if (zoomUrl) {
+                zoomUrl = decodeURIComponent(zoomUrl);
+                if (!zoomUrl.includes('?')) {
+                    zoomUrl += '?browser=chrome';
+                } else {
+                    zoomUrl += '&browser=chrome';
+                }
+            }
+            return zoomUrl || 'about:blank';
         }
     </script>
 </head>
 <body>
     <iframe id="zoomFrame" allow="microphone; camera"></iframe>
     <script>
-        document.getElementById('zoomFrame').src = getZoomLink();
+        const zoomFrame = document.getElementById('zoomFrame');
+        zoomFrame.src = getZoomLink();
     </script>
 </body>
 </html>
