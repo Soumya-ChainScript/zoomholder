@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zoom Desktop Emulator</title>
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #000;
+            overflow: hidden;
+        }
+        iframe {
+            width: 1920px;
+            height: 1080px;
+            border: none;
+        }
+    </style>
+    <script>
+        // Override the user-agent to mimic a desktop browser
+        Object.defineProperty(navigator, 'userAgent', {
+            get: function () {
+                return "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36";
+            }
+        });
+
+        // Get full Zoom link from URL parameters
+        function getZoomLink() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const zoomUrl = urlParams.get('zoom');
+            return zoomUrl ? decodeURIComponent(zoomUrl) : 'about:blank';
+        }
+    </script>
+</head>
+<body>
+    <iframe id="zoomFrame" allow="microphone; camera"></iframe>
+    <script>
+        document.getElementById('zoomFrame').src = getZoomLink();
+    </script>
+</body>
+</html>
